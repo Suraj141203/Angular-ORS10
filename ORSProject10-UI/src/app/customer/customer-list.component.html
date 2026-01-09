@@ -1,0 +1,160 @@
+<app-navbar></app-navbar>
+
+<style>
+  #nnn {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .panel-heading {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .search-inputs {
+    margin-top: 20px;
+  }
+
+  .search-inputs .form-control,
+  .search-inputs .btn {
+    margin-bottom: 10px;
+  }
+
+  .content-wrapper {
+    background: url('assets/files/teahu.png') no-repeat center center;
+    background-attachment: fixed;
+    background-size: cover;
+    width: auto;
+    height: 105vh;
+    padding: 20px;
+  }
+
+  .table-responsive {
+    margin-top: 20px;
+  }
+
+  .search-inputs .col-sm-2,
+  .search-inputs .col-sm-1 {
+    padding: 0 5px;
+  }
+
+  .alertRedColor {
+    color: red;
+  }
+</style>
+
+<div class="content-wrapper">
+  <div class="container-fluid">
+    <div class="panel panel-primary" style="padding-top: 73px;">
+      <div class="panel-heading">
+        <h1 class="text-primary font-weight-bold">{{ 'Customer List' | translate }}</h1>
+      </div>
+
+      <!-- Search Inputs -->
+      <div class="row search-inputs p-1 justify-content-center g-3">
+        <div class="col-sm-2">
+          <input type="text" name="clientName" [(ngModel)]="form.searchParams.clientName" class="form-control"
+                 placeholder="{{ 'Enter clientName' | translate }}">
+          <span *ngIf="errorMessageClientName" class="alertRedColor">{{ errorMessageClientName }}</span>
+        </div>
+
+        <div class="col-sm-2">
+          <input type="text" name="location" [(ngModel)]="form.searchParams.location" class="form-control"
+                 placeholder="{{ 'Enter location' | translate }}">
+        </div>
+
+        <div class="col-sm-2">
+          <input type="text" name="contactNumber" [(ngModel)]="form.searchParams.contactNumber" class="form-control"
+                 placeholder="{{ 'Enter contactNumber' | translate }}">
+        </div>
+
+        <div class="col-sm-2">
+          <select class="form-control" name="importance" [(ngModel)]="form.searchParams.importance" aria-label="ngSelected">
+            <option [ngValue]="undefined">{{ 'Select importance' | translate }}</option>
+            <option value="High">{{ 'High' | translate }}</option>
+            <option value="Medium">{{ 'Medium' | translate }}</option>
+            <option value="Low">{{ 'Low' | translate }}</option>
+          </select>
+        </div>
+
+        <div class="col-sm-1">
+          <button (click)="submit()" class="btn btn-primary w-100">{{ 'Search' | translate }}</button>
+        </div>
+
+        <div>
+          <button (click)="forward('/customer')" type="button" class="btn btn-success w-100">
+            {{ 'Add Customer' | translate }}
+          </button>
+        </div>
+
+        <div class="col-sm-1">
+          <button (click)="deleteMany()" class="btn btn-danger w-100">{{ 'Delete' | translate }}</button>
+        </div>
+      </div>
+
+      <!-- Alerts -->
+      <div *ngIf="form.error" class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ form.message }}
+      </div>
+
+      <div *ngIf="!form.error && form.message != null" class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ form.message }}
+      </div>
+
+      <!-- Customer Table -->
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover table-dark">
+          <thead class="thead-dark text-uppercase">
+            <tr align="center">
+              <th><input type="checkbox" [(ngModel)]="isMasterSel" (change)="checkUncheckAll($event)" /></th>
+              <th>{{ 'S.No' | translate }}</th>
+              <th>{{ 'ClientName' | translate }}</th>
+              <th>{{ 'Location' | translate }}</th>
+              <th>{{ 'ContactNumber' | translate }}</th>
+              <th>{{ 'Importance' | translate }}</th>
+              <th>{{ 'Edit' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let m of form.list; let i = index" align="center">
+              <td><input type="checkbox" #checkboxes (change)="checklistUpdate()" [id]="m.id" /></td>
+              <td>{{ (form.pageNo * 5) + i + 1 }}</td>
+              <td>{{ m.clientName }}</td>
+              <td>{{ m.location }}</td>
+              <td>{{ m.contactNumber }}</td>
+              <td>{{ m.importance }}</td>
+              <td>
+                <!-- Edit button -->
+                <button class="fa fa-edit text-primary" id="nnn" (click)="forward('/customer/' + m.id)">
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Pagination & Reset -->
+        <div class="d-flex justify-content-between mt-3">
+          <button (click)="previous()" [disabled]="form.pageNo == 0" class="btn btn-info">{{ 'Previous' | translate }}</button>
+          <div>
+            <!-- <a class="btn btn-warning mr-1" [routerLink]="['/customerlist']" (click)="exit()">
+              {{ 'Reset' | translate }}
+            </a> -->
+          </div>
+          <div *ngIf="form.list.length == 0">
+            <a class="btn btn-warning mr-1" [routerLink]="['/customerlist']" (click)="exit()">
+              {{ 'Back' | translate }}
+            </a>
+          </div>
+          <button (click)="next()" [disabled]="nextList == 0" class="btn btn-info">{{ 'Next' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>
