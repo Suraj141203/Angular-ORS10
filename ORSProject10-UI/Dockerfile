@@ -1,14 +1,46 @@
-# Use a stable and updated JDK base image (OpenJDK 17 via Eclipse Temurin)
-FROM eclipse-temurin:17-jdk
+# Stage 1 — Build Angular App (Apple Silicon Compatible)
+# build stage
+# ---------- Runtime Stage ----------
+FROM nginx:alpine
 
-# Set working directory inside container
-WORKDIR /app
+# Remove default nginx config
+RUN rm -rf /usr/share/nginx/html/*
 
-# Copy the Spring Boot JAR file into the container
-COPY ./target/springboottest-0.0.1-SNAPSHOT.jar app.jar
+# Copy already-built Angular dist
+COPY dist/P10-UI/ /usr/share/nginx/html/
 
-# Expose the backend port
-EXPOSE 8084
+EXPOSE 80
 
-# Run the Spring Boot application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+CMD ["nginx", "-g", "daemon off;"]
+
+
+# # Use an official Node.js runtime as the base image
+# FROM node:14 as build
+
+# # Set the working directory in the container
+# WORKDIR /app
+
+# # Copy package.json and package-lock.json to the container
+# COPY package*.json ./
+
+# # Install the Angular CLI and dependencies
+# RUN npm install -g @angular/cli
+# RUN npm install
+
+# # Copy the entire Angular project to the container
+# COPY . .
+
+# # Build the Angular application for production
+# RUN ng build
+
+# # Use NGINX as a lightweight web server to serve the Angular app
+# FROM nginx:alpine
+
+# # Copy the production build from the previous stage into NGINX's web root
+# COPY --from=build /app/dist /usr/share/nginx/html
+
+# # Expose the default Nginx port (usually port 80)
+# EXPOSE 80
+
+# # Start Nginx when the container is run
+# CMD ["nginx", "-g", "daemon off;"]

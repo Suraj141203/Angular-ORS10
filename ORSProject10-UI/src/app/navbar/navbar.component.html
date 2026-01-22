@@ -21,7 +21,7 @@
     <div class="logo">
       <a class="nav-link" [routerLink]="['/dashboard']">
         <!-- <strong class="text-white">Rays</strong> -->
-        <img src="assets\files\custom.png" height="40px" width="120px" />
+        <img src="assets\files\custom.png" height="50px" width="120px" />
       </a>
     </div>
     <select #locale (change)="changeLocale(locale.value)" class="form-select custom-select-box">
@@ -86,6 +86,21 @@
       <li class="nav-item dropdown" style="padding-left: 5px">
         <a class="nav-link dropdown-toggle" [routerLink]="['/#']" id="navbarDropdown" role="button"
           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <font style="color: white">{{ "Order" | translate }}</font>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" [routerLink]="['/order']"><i class="fa fa-university"></i> &nbsp;
+            {{ "Add Order" | translate }}</a>
+          <a class="dropdown-item" [routerLink]="['/orderlist']"><i class="fa fa-building"></i> &nbsp;
+            {{ "Order List" | translate }}
+          </a>
+        </div>
+
+      <!-- =================================== CUSTOMER =========================================== -->
+
+      <li class="nav-item dropdown" style="padding-left: 5px">
+        <a class="nav-link dropdown-toggle" [routerLink]="['/#']" id="navbarDropdown" role="button"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <font style="color: white">{{ "Customer" | translate }}</font>
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -96,6 +111,20 @@
           </a>
         </div>
       
+        <!-- =================================== Position =========================================== 
+
+      <li class="nav-item dropdown" style="padding-left: 5px">
+        <a class="nav-link dropdown-toggle" [routerLink]="['/#']" id="navbarDropdown" role="button"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <font style="color: white">{{ "Position" | translate }}</font>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" [routerLink]="['/position']"><i class="fa fa-user"></i> &nbsp;
+            {{ "Add Position" | translate }}</a>
+          <a class="dropdown-item" [routerLink]="['/positionlist']"><i class="fa fa-list"></i> &nbsp;
+            {{ "Position List" | translate }}
+          </a>
+        </div>-->
       <!-- =================================== CART ===========================================
 
       <li class="nav-item dropdown" style="padding-left: 5px">
@@ -252,10 +281,7 @@
             {{ "Add Subject" | translate }}</a>
           <a class="dropdown-item" [routerLink]="['/subjectlist']">
             <i class="fa fa-list"></i> &nbsp;
-            {{
-            "Subject
-            List" | translate
-            }}
+            {{"SubjectList" | translate}}
           </a>
         </div>
       </li>

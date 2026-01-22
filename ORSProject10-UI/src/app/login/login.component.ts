@@ -90,8 +90,7 @@ export class LoginComponent implements OnInit {
   }
 
 
-  signIn() {
-    
+ signIn() {
     var _self = this;   
     this.form.error = false;
     const requestedUrl = this.httpService.userparams.url;//to get the URI
@@ -106,7 +105,6 @@ export class LoginComponent implements OnInit {
       //_self.form.loginId = res.result.loginId;
       if (_self.dataValidator.isNotNullObject(res.result.message)) {
         _self.form.message = res.result.message;
-        console.log('messageeeeeeeeee',res.result.message);
       }
 
       _self.form.error = !res.success;

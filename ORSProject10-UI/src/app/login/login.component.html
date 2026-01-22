@@ -1,4 +1,4 @@
-<app-navbar #one></app-navbar>
+<app-navbar></app-navbar>
 <style>
   #nnn {
     background: none;
@@ -25,7 +25,7 @@
 
   }
 </style>
-<div class="row " style="padding-top: 8%; padding-bottom: 8%;
+<div class="row " style="padding-top: 15%; padding-bottom: 8%;
    background: url(assets/files/Login3.jpg) no-repeat center center;
    background-attachment: fixed;
    background-size: 225vh;width:auto;
@@ -45,12 +45,19 @@
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             {{'Invalid ID or Password' | translate}}
           </div>
+          <div *ngIf="form.error && form.message && form.message != 'Invalid ID or Password'
+                  && form.message != 'Your Session has been Expired! Please Re-Login'"
+                class="alert alert-danger alert-dismissible">
+
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+                     {{ form.message }}
+          </div>
           <div *ngIf="form.error==false && form.message == 'Logout Successfully'"
             class="alert alert-success alert-dismissible">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             {{'Log out successfully' | translate}}
           </div>
-
+          
           <div *ngIf="form.error && form.message == 'Your Session has been Expired! Please Re-Login'"
             class="alert alert-danger alert-dismissible">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -95,7 +102,7 @@
             <div class="pt-2 pl-7">
               &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <button (click)="signIn()" class="btn btn-md btn-success">
+              <button type="button" (click)="signIn()" class="btn btn-md btn-success">
                 {{'Sign in' | translate}}</button>
             </div>
             &nbsp;&nbsp;&nbsp;

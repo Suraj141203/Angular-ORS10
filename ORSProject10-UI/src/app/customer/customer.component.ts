@@ -21,7 +21,6 @@ export class CustomerComponent extends BaseCtl {
     console.log(this.form.data.id + '---- after submit');
 
   }
-
   validateForm(form) {
     let flag = true;
     let validator = this.serviceLocator.dataValidator;

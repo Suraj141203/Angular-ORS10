@@ -45,34 +45,37 @@
     color: red;
   }
 </style>
-
-<div class="content-wrapper">
+<div class="content-wrapper ">
   <div class="container-fluid">
-    <div class="panel panel-primary" style="padding-top: 73px;">
+    <div class="panel panel-primary" style="padding-top: 12%;">
       <div class="panel-heading">
         <h1 class="text-primary font-weight-bold">{{ 'Customer List' | translate }}</h1>
       </div>
 
-      <!-- Search Inputs -->
       <div class="row search-inputs p-1 justify-content-center g-3">
         <div class="col-sm-2">
           <input type="text" name="clientName" [(ngModel)]="form.searchParams.clientName" class="form-control"
-                 placeholder="{{ 'Enter clientName' | translate }}">
-          <span *ngIf="errorMessageClientName" class="alertRedColor">{{ errorMessageClientName }}</span>
+            placeholder="{{ 'Enter clientName' | translate }}">
+          <span *ngIf="errorMessageclientName" class="alertRedColor">{{ errorMessageclientName }}</span>
         </div>
 
         <div class="col-sm-2">
           <input type="text" name="location" [(ngModel)]="form.searchParams.location" class="form-control"
-                 placeholder="{{ 'Enter location' | translate }}">
+            placeholder="{{ 'Enter location' | translate }}">
+          <span *ngIf="errorMessagelocation" class="alertRedColor">{{ errorMessagelocation }}</span>
         </div>
 
         <div class="col-sm-2">
           <input type="text" name="contactNumber" [(ngModel)]="form.searchParams.contactNumber" class="form-control"
-                 placeholder="{{ 'Enter contactNumber' | translate }}">
+            placeholder="{{ 'Enter  contactNumber' | translate }}">
+          <span *ngIf="errorMessagecontactNumber" class="alertRedColor">{{ errorMessagecontactNumber}}</span>
         </div>
 
+        
+
         <div class="col-sm-2">
-          <select class="form-control" name="importance" [(ngModel)]="form.searchParams.importance" aria-label="ngSelected">
+          <select class="form-control" name="importance" [(ngModel)]="form.searchParams.importance"
+            aria-label="ngSelected" required>
             <option [ngValue]="undefined">{{ 'Select importance' | translate }}</option>
             <option value="High">{{ 'High' | translate }}</option>
             <option value="Medium">{{ 'Medium' | translate }}</option>
@@ -95,7 +98,7 @@
         </div>
       </div>
 
-      <!-- Alerts -->
+
       <div *ngIf="form.error" class="alert alert-danger alert-dismissible">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         {{ form.message }}
@@ -106,15 +109,15 @@
         {{ form.message }}
       </div>
 
-      <!-- Customer Table -->
       <div class="table-responsive">
-        <table class="table table-bordered table-hover table-dark">
-          <thead class="thead-dark text-uppercase">
+        <table class="table table-bordered table-hover table-dark  ">
+          <thead class="thead-dark text-uppercase ">
             <tr align="center">
-              <th><input type="checkbox" [(ngModel)]="isMasterSel" (change)="checkUncheckAll($event)" /></th>
+              <th><input type="checkbox" [(ngModel)]="isMasterSel" name="list_name"
+                  (change)="checkUncheckAll($event)" /></th>
               <th>{{ 'S.No' | translate }}</th>
               <th>{{ 'ClientName' | translate }}</th>
-              <th>{{ 'Location' | translate }}</th>
+              <th>{{ 'Location ' | translate }}</th>
               <th>{{ 'ContactNumber' | translate }}</th>
               <th>{{ 'Importance' | translate }}</th>
               <th>{{ 'Edit' | translate }}</th>
@@ -122,14 +125,14 @@
           </thead>
           <tbody>
             <tr *ngFor="let m of form.list; let i = index" align="center">
-              <td><input type="checkbox" #checkboxes (change)="checklistUpdate()" [id]="m.id" /></td>
+              <td><input type="checkbox" #checkboxes (change)="checklistUpdate()" name="list_name" [id]="m.id" /></td>
               <td>{{ (form.pageNo * 5) + i + 1 }}</td>
               <td>{{ m.clientName }}</td>
               <td>{{ m.location }}</td>
               <td>{{ m.contactNumber }}</td>
-              <td>{{ m.importance }}</td>
+              <td>{{m.importance}}</td>
+
               <td>
-                <!-- Edit button -->
                 <button class="fa fa-edit text-primary" id="nnn" (click)="forward('/customer/' + m.id)">
                 </button>
               </td>
@@ -137,14 +140,16 @@
           </tbody>
         </table>
 
-        <!-- Pagination & Reset -->
         <div class="d-flex justify-content-between mt-3">
-          <button (click)="previous()" [disabled]="form.pageNo == 0" class="btn btn-info">{{ 'Previous' | translate }}</button>
+          <button (click)="previous()" [disabled]="form.pageNo == 0" class="btn btn-info">{{ 'Previous' | translate
+            }}</button>
+
           <div>
-            <!-- <a class="btn btn-warning mr-1" [routerLink]="['/customerlist']" (click)="exit()">
+            <a class="btn btn-warning mr-1" [routerLink]="['/customerlist']" (click)="exit()">
               {{ 'Reset' | translate }}
-            </a> -->
+            </a>
           </div>
+
           <div *ngIf="form.list.length == 0">
             <a class="btn btn-warning mr-1" [routerLink]="['/customerlist']" (click)="exit()">
               {{ 'Back' | translate }}

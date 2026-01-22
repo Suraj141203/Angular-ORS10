@@ -95,6 +95,7 @@ export class NavbarComponent implements OnInit {
       _self.servicelocator.router.navigateByUrl('/login/true');
       if (res.success) {
         localStorage.clear();
+        sessionStorage.clear();
         _self.form.message = res.result.message;
         
       };

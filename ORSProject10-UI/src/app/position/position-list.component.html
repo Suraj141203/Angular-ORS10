@@ -1,0 +1,163 @@
+<app-navbar></app-navbar>
+
+<style>
+  #nnn {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .panel-heading {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .search-inputs {
+    margin-top: 20px;
+  }
+
+  .search-inputs .form-control,
+  .search-inputs .btn {
+    margin-bottom: 10px;
+  }
+
+  .content-wrapper {
+    background: url('assets/files/teahu.png') no-repeat center center;
+    background-attachment: fixed;
+    background-size: cover;
+    width: auto;
+    height: 105vh;
+    padding: 20px;
+  }
+
+  .table-responsive {
+    margin-top: 20px;
+  }
+
+  .search-inputs .col-sm-2,
+  .search-inputs .col-sm-1 {
+    padding: 0 5px;
+  }
+
+  .alertRedColor {
+    color: red;
+  }
+</style>
+<div class="content-wrapper ">
+  <div class="container-fluid">
+    <div class="panel panel-primary" style="padding-top: 12%;">
+      <div class="panel-heading">
+        <h1 class="text-primary font-weight-bold">{{ 'Position List' | translate }}</h1>
+      </div>
+
+      <div class="row search-inputs p-1 justify-content-center g-3">
+        <div class="col-sm-2">
+          <input type="text" name="designation" [(ngModel)]="form.searchParams.designation" class="form-control"
+            placeholder="{{ 'Enter designation' | translate }}">
+          <span *ngIf="errorMessageDesignation" class="alertRedColor">{{ errorMessageDesignation }}</span>
+        </div>
+
+        <div class="col-sm-2">
+          <input type="date" name="openingDate" [(ngModel)]="form.searchParams.openingDate" class="form-control"
+            placeholder="{{ 'Enter openingDate' | translate }}">
+          <span *ngIf="errorMessageOpeningDate" class="alertRedColor">{{ errorMessageOpeningDate }}</span>
+        </div>
+
+        <div class="col-sm-2">
+          <input type="text" name="requiredExperience" [(ngModel)]="form.searchParams.requiredExperience" class="form-control"
+            placeholder="{{ 'Enter Required Experience' | translate }}">
+          <span *ngIf="errorMessageRequiredExperience" class="alertRedColor">{{ errorMessageRequiredExperience}}</span>
+        </div>
+
+        <div class="col-sm-2">
+          <select class="form-control" name="condition" [(ngModel)]="form.searchParams.condition"
+            aria-label="ngSelected" required>
+            <option [ngValue]="undefined">{{ 'Select condition' | translate }}</option>
+            <option value="Open">{{ 'Open' | translate }}</option>
+            <option value="Closed">{{ 'Closed' | translate }}</option>
+            <option value="OnHold">{{ 'OnHold' | translate }}</option>
+          </select>
+        </div>
+
+        <div class="col-sm-1">
+          <button (click)="submit()" class="btn btn-primary w-100">{{ 'Search' | translate }}</button>
+        </div>
+
+        <div>
+          <button (click)="forward('/position')" type="button" class="btn btn-success w-100">
+            {{ 'Add Position' | translate }}
+          </button>
+        </div>
+
+        <div class="col-sm-1">
+          <button (click)="deleteMany()" class="btn btn-danger w-100">{{ 'Delete' | translate }}</button>
+        </div>
+      </div>
+
+
+      <div *ngIf="form.error" class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ form.message }}
+      </div>
+
+      <div *ngIf="!form.error && form.message != null" class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ form.message }}
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover table-dark  ">
+          <thead class="thead-dark text-uppercase ">
+            <tr align="center">
+              <th><input type="checkbox" [(ngModel)]="isMasterSel" name="list_name"
+                  (change)="checkUncheckAll($event)" /></th>
+              <th>{{ 'S.No' | translate }}</th>
+              <th>{{ 'designation' | translate }}</th>
+              <th>{{ 'openingDate ' | translate }}</th>
+              <th>{{ 'requiredExperience' | translate }}</th>
+              <th>{{ 'condition' | translate }}</th>
+              <th>{{ 'Edit' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let m of form.list; let i = index" align="center">
+              <td><input type="checkbox" #checkboxes (change)="checklistUpdate()" name="list_name" [id]="m.id" /></td>
+              <td>{{ (form.pageNo * 5) + i + 1 }}</td>
+              <td>{{ m.designation }}</td>
+              <td>{{ m.openingDate }}</td>
+              <td>{{ m.requiredExperience }}</td>
+              <td>{{m.condition}}</td>
+
+              <td>
+                <button class="fa fa-edit text-primary" id="nnn" (click)="forward('/position/' + m.id)">
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="d-flex justify-content-between mt-3">
+          <button (click)="previous()" [disabled]="form.pageNo == 0" class="btn btn-info">{{ 'Previous' | translate
+            }}</button>
+
+          <div>
+            <a class="btn btn-warning mr-1" [routerLink]="['/positionlist']" (click)="exit()">
+              {{ 'Reset' | translate }}
+            </a>
+          </div>
+
+          <div *ngIf="form.list.length == 0">
+            <a class="btn btn-warning mr-1" [routerLink]="['/positionlist']" (click)="exit()">
+              {{ 'Back' | translate }}
+            </a>
+          </div>
+          <button (click)="next()" [disabled]="nextList == 0" class="btn btn-info">{{ 'Next' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

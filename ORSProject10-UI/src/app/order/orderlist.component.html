@@ -1,0 +1,169 @@
+<app-navbar></app-navbar>
+
+<style>
+  #nnn {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .panel-heading {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .search-inputs {
+    margin-top: 20px;
+  }
+
+  .search-inputs .form-control,
+  .search-inputs .btn {
+    margin-bottom: 10px;
+  }
+
+  .content-wrapper {
+    background: url('assets/files/teahu.png') no-repeat center center;
+    background-attachment: fixed;
+    background-size: cover;
+    width: auto;
+    height: 105vh;
+    padding: 20px;
+  }
+
+  .table-responsive {
+    margin-top: 20px;
+  }
+
+  .search-inputs .col-sm-2,
+  .search-inputs .col-sm-1 {
+    padding: 0 5px;
+  }
+
+  .alertRedColor {
+    color: red;
+  }
+</style>
+<div class="content-wrapper ">
+  <div class="container-fluid">
+    <div class="panel panel-primary" style="padding-top: 12%;">
+      <div class="panel-heading">
+        <h1 class="text-primary font-weight-bold">{{ 'Order List' | translate }}</h1>
+      </div>
+
+      <div class="row search-inputs p-1 justify-content-center g-3">
+        <div class="col-sm-2">
+          <input type="text" name="productName" [(ngModel)]="form.searchParams.productName" class="form-control"
+            placeholder="{{ 'Enter product Name' | translate }}">
+          <span *ngIf="errorMessageproductName" class="alertRedColor">{{ errorMessageproductName }}</span>
+        </div>
+
+        <div class="col-sm-2">
+          <input type="date" name="orderDate" [(ngModel)]="form.searchParams.orderDate" class="form-control"
+            placeholder="{{ 'Enter Order Date' | translate }}">
+          <span *ngIf="errorMessageoderDate" class="alertRedColor">{{ errorMessageoderDate }}</span>
+        </div>
+
+        <div class="col-sm-2">
+          <input type="number" name="quantity" [(ngModel)]="form.searchParams.quantity" class="form-control"
+            placeholder="{{ 'Enter  Quantity' | translate }}">
+          <span *ngIf="errorMessagequantity" class="alertRedColor">{{ errorMessagequantity}}</span>
+        </div>
+
+        
+
+        <div class="col-sm-2">
+          <select class="form-control" name="customer" [(ngModel)]="form.data.customer"
+          aria-label="ngSelected" required>
+              <option [ngValue]="undefined">{{ 'Select customer' | translate }}</option>
+              <option value="TCS">{{ 'TCS' | translate }}</option>
+              <option value="Infosys">{{ 'Infosys' | translate }}</option>
+              <option value="Tech Mahindra">{{ 'Tech Mahindra' | translate }}</option>
+              <option value="Zensar">{{ 'Zensar' | translate }}</option>
+              <option value="Accenture">{{ 'Accenture' | translate }}</option>
+              <option value="CapGemini">{{ 'CapGemini' | translate }}</option>
+              <option value="LNT">{{ 'LNT' | translate }}</option>
+          </select>
+        </div>
+
+        <div class="col-sm-1">
+          <button (click)="submit()" class="btn btn-primary w-100">{{ 'Search' | translate }}</button>
+        </div>
+
+        <div>
+          <button (click)="forward('/order')" type="button" class="btn btn-success w-100">
+            {{ 'Add Order' | translate }}
+          </button>
+        </div>
+
+        <div class="col-sm-1">
+          <button (click)="deleteMany()" class="btn btn-danger w-100">{{ 'Delete' | translate }}</button>
+        </div>
+      </div>
+
+
+      <div *ngIf="form.error" class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ form.message }}
+      </div>
+
+      <div *ngIf="!form.error && form.message != null" class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ form.message }}
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover table-dark  ">
+          <thead class="thead-dark text-uppercase ">
+            <tr align="center">
+              <th><input type="checkbox" [(ngModel)]="isMasterSel" name="list_name"
+                  (change)="checkUncheckAll($event)" /></th>
+              <th>{{ 'S.No' | translate }}</th>
+              <th>{{ 'Product Name' | translate }}</th>
+              <th>{{ 'Order Date' | translate }}</th>
+              <th>{{ 'Quantity' | translate }}</th>
+              <th>{{ 'Customer' | translate }}</th>
+              <th>{{ 'Edit' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let m of form.list; let i = index" align="center">
+              <td><input type="checkbox" #checkboxes (change)="checklistUpdate()" name="list_name" [id]="m.id" /></td>
+              <td>{{ (form.pageNo * 5) + i + 1 }}</td>
+              <td>{{ m.productName }}</td>
+              <td>{{ m.orderDate }}</td>
+              <td>{{ m.quantity }}</td>
+              <td>{{m.customer}}</td>
+
+              <td>
+                <button class="fa fa-edit text-primary" id="nnn" (click)="forward('/order/' + m.id)">
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="d-flex justify-content-between mt-3">
+          <button (click)="previous()" [disabled]="form.pageNo == 0" class="btn btn-info">{{ 'Previous' | translate
+            }}</button>
+
+          <div>
+            <a class="btn btn-warning mr-1" [routerLink]="['/orderlist']" (click)="exit()">
+              {{ 'Reset' | translate }}
+            </a>
+          </div>
+
+          <div *ngIf="form.list.length == 0">
+            <a class="btn btn-warning mr-1" [routerLink]="['/orderlist']" (click)="exit()">
+              {{ 'Back' | translate }}
+            </a>
+          </div>
+          <button (click)="next()" [disabled]="nextList == 0" class="btn btn-info">{{ 'Next' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

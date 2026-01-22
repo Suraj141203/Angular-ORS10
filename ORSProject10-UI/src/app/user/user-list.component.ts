@@ -57,7 +57,7 @@ export class UserListComponent extends BaseListCtl {
     this.form.data.id = id;
     console.log(this.form.data.id);
 
-    this.httpClient.get('http://localhost:8080/User/profilePic/' + this.form.data.id, { responseType: 'blob' }).subscribe(data => {
+    this.httpClient.get('http://localhost:8084/User/profilePic/' + this.form.data.id, { responseType: 'blob' }).subscribe(data => {
       this.createImageFromBlob(data);
       this.myKey = this.form.data.id;
     }, error => {

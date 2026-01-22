@@ -13,7 +13,6 @@ export class CustomerlistComponent extends BaseListCtl implements OnInit {
   myKey = "";
   errorMessageClientName: string = '';
 
-
   public form = {
     error: false,
     message: null,

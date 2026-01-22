@@ -6,7 +6,7 @@
   }
 </style>
 
-<div class="content-wrapper" style=" padding-top: 7%;
+<div class="content-wrapper" style=" padding-top: 12%;
 background: url(assets/files/wall.jpg) no-repeat center center;
 background-attachment: fixed;
 background-size: cover;width:auto;
@@ -17,7 +17,7 @@ background-size: cover;width:auto;
       <div class="panel-heading" style="height: 50px;">
         <!-- <div class="col-sm-5"> -->
         <div class="text-center">
-          <h1 class="text-primary font-weight-bold">{{'User List1111' | translate }}</h1>
+          <h1 class="text-primary font-weight-bold">{{'User List' | translate }}</h1>
         </div>
       </div>
       <!-- <button class="filebtn third">Button 3</button> -->
@@ -26,21 +26,22 @@ background-size: cover;width:auto;
         <div class="col-sm-2">
           <input type="text" class="form-control" [(ngModel)]="form.searchParams.firstName"
             placeholder="{{'Search First Name' | translate}}">
-
         </div>
-
-
-        <!-- <div class="col-sm-2">
+        <!--<div class="col-sm-2">
           <input type="date" class="form-control" [(ngModel)]="form.searchParams.dob"
             placeholder="{{'Search dob' | translate}}">
-
-        </div> -->
-
-        <!-- <div class="col-sm-2">
+        </div>-->
+        <!--<div class=" col-sm-2">
+        <select class="form-control" name="gender" id="gender" [(ngModel)]="form.searchParams.gender" aria-label="ngSelected">
+            <option [ngValue]="" value="undefined">{{' Select Gender' | translate }}</option>
+            <option value="Male">{{'Male' | translate }} </option>
+            <option value="Female">{{'Female' | translate }} </option>
+          </select>
+        </div>
+        <div class="col-sm-2">
           <input type="text" class="form-control" [(ngModel)]="form.searchParams.loginId" placeholder="{{'Search Email' | translate}}">
         </div> -->
         <div class="col-sm-2">
-
           <select class="form-control" name="roleId" [(ngModel)]="form.searchParams.roleId" aria-label="ngSelected">
             <option [ngValue]="" value="undefined">{{' Select Role' | translate }}</option>
             <option *ngFor="let obj of form.preload.roleList" [value]="obj.key">{{obj.value}}</option>
@@ -53,20 +54,15 @@ background-size: cover;width:auto;
           <button (click)="submit()" class="btn btn-primary">
             {{'Search' | translate }}</button>
         </div>
-        &nbsp;&nbsp;&nbsp;
         <div class="col-lg-2 ml-4">
           <button (click)="forward('/user')" type="button" class="btn btn-success">{{'Add User' | translate}}
           </button>
         </div>
-
-
         <div class="col-sm-1">
           <button (click)="deleteMany()" class="btn btn-danger">
             {{'Delete'| translate}}</button>
         </div>
       </div>
-
-
       <div *ngIf="form.error" class="alert alert-danger alert-dismissible">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         {{form.message}}
@@ -138,8 +134,6 @@ background-size: cover;width:auto;
               </tr>
 
 
-
-
             </tbody>
 
           </table>
@@ -156,13 +150,10 @@ background-size: cover;width:auto;
                   [routerLink]="['/userlist']" (click)="exit()">{{'Back' | translate}}</a></td>
 
 
-
               <td><button (click)="next()" [disabled]="nextList==0" type="button" class="btn btn-info"> {{'Next' |
                   translate }}</button></td>
             </tr>
           </table>
-
-
 
         </div>
       </div>
@@ -170,4 +161,3 @@ background-size: cover;width:auto;
     </div>
   </div>
 </div>
-<app-footer></app-footer>

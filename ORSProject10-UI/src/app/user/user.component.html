@@ -19,12 +19,12 @@
   }
 </style>
 
-<div class="row " style="padding-top: 6%; padding-bottom:5%;
+<div class="row " style="padding-top: 8%; padding-bottom:5%;
 
 background: url(assets/files/wall.jpg) no-repeat center center;
 background-attachment: fixed;
 background-size: cover;width:100%;
-  height: auto;">
+  height: 119vh;">
 
   <div class="col-sm-4"></div>
   <div class="col-sm-4">
@@ -63,7 +63,7 @@ background-size: cover;width:100%;
                 </select>
               </div>
             </div>
-            <span *ngIf="form.inputerror.roleId != null" class="alertRedColor" style=" color: red;"> {{'role'|
+            <span *ngIf="form.inputerror.roleId != null" class="alertRedColor" style=" color: rgb(255, 51, 0);"> {{'role'|
               translate}} </span>
             <!-- <span class="alertRedColor"> {{form.inputerror.roleId}} </span> -->
           </div>
@@ -184,7 +184,7 @@ background-size: cover;width:100%;
                   required />
               </div>
             </div>
-<span *ngIf="form.inputerror.dob != null" class="alertRedColor" style=" color: red;"> {{'dob'|
+          <span *ngIf="form.inputerror.dob != null" class="alertRedColor" style=" color: red;"> {{'dob'|
               translate}} </span>
             <!-- <span class="alertRedColor"> {{form.inputerror.dob}} </span> -->
           </div>
@@ -281,4 +281,3 @@ background-size: cover;width:100%;
     </div>
   </div>
 </div>
-<app-footer></app-footer>
