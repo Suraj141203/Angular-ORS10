@@ -88,8 +88,15 @@ export class BaseCtl implements OnInit {
   preload() {
     console.log("preload start")
     var _self = this;
-    this.serviceLocator.httpService.get(_self.api.preload, function (res) {
+    this.serviceLocator.httpService.get(_self.api.preload, function (res, err) {
       console.log("base list preload",_self.api.preload)
+      
+      if (err) {
+        _self.form.message = err.message;
+        _self.form.error = true;     // ← THIS makes it red
+        return;
+      }
+      
       if (res.success) {
         _self.form.preload = res.result;
       } else {
@@ -120,8 +127,14 @@ export class BaseCtl implements OnInit {
     console.log("search start")
     var _self = this;
     console.log("Search Form", _self.form.searchParams);
-    this.serviceLocator.httpService.post(_self.api.search + "/" + _self.form.pageNo, _self.form.searchParams, function (res) {
+    this.serviceLocator.httpService.post(_self.api.search + "/" + _self.form.pageNo, _self.form.searchParams, function (res, err) {
 
+
+       if (err) {
+        _self.form.message = err.message;
+        _self.form.error = true;     // ← THIS makes it red
+        return;
+      }
 
       if (res.success) {
         _self.form.list = res.result.data;
@@ -177,8 +190,15 @@ export class BaseCtl implements OnInit {
 
     var _self = this;
     console.log('Inside display method');
-    this.serviceLocator.httpService.get(_self.api.get + "/" + _self.form.data.id, function (res) {
+    this.serviceLocator.httpService.get(_self.api.get + "/" + _self.form.data.id, function (res, err) {
      _self.form.data.id=0;
+
+       if (err) {
+        _self.form.message = err.message;
+        _self.form.error = true;     // ← THIS makes it red
+        return;
+      }
+      
        if (res.success) {
          _self.populateForm(_self.form.data, res.result.data);
        }
@@ -216,7 +236,7 @@ export class BaseCtl implements OnInit {
   this.serviceLocator.httpService.post(
     this.api.save,
     this.form.data,
-    function (res) {
+    function (res, err) {
 
       // 🔹 Reset messages
       _self.form.message = '';
@@ -224,6 +244,12 @@ export class BaseCtl implements OnInit {
       _self.form.error = false;   // ✅ VERY IMPORTANT
 
       console.log('response ===== > ', res);
+
+       if (err) {
+        _self.form.message = err.message;
+        _self.form.error = true;     // ← THIS makes it red
+        return;
+      }
 
       if (res.success) {
 
@@ -262,7 +288,13 @@ export class BaseCtl implements OnInit {
 
   delete(id, callback?) {
     var _self = this;
-    this.serviceLocator.httpService.get(_self.api.delete + "/" + id, function (res) {
+    this.serviceLocator.httpService.get(_self.api.delete + "/" + id, function (res, err) {
+
+       if (err) {
+        _self.form.message = err.message;
+        _self.form.error = true;     // ← THIS makes it red
+        return;
+      }
       if (res.success) {
         _self.form.message = "Data is deleted";
         if (callback) {
@@ -279,7 +311,13 @@ export class BaseCtl implements OnInit {
 
     deleteMany(id, callback?) {
     var _self = this;
-    this.serviceLocator.httpService.post(_self.api.deleteMany + "/" + id, this.form.searchParams, function (res) {
+    this.serviceLocator.httpService.post(_self.api.deleteMany + "/" + id, this.form.searchParams, function (res, err) {
+
+       if (err) {
+        _self.form.message = err.message;
+        _self.form.error = true;     // ← THIS makes it red
+        return;
+      }
       if (res.success) {
         _self.form.message = "Data is deleted";
         
