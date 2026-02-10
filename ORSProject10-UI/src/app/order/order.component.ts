@@ -64,7 +64,7 @@ errorMessageTitle: string = '';
     const charCode = event.which || event.keyCode;
     const charStr = String.fromCharCode(charCode);
 
-    // Regular expression to test if the character is a letter
+    // Regular expression to test if the character
     if (!/^[a-zA-Z]+$/.test(charStr)) {
       event.preventDefault();
     }
