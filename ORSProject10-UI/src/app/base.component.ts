@@ -88,14 +88,8 @@ export class BaseCtl implements OnInit {
   preload() {
     console.log("preload start")
     var _self = this;
-    this.serviceLocator.httpService.get(_self.api.preload, function (res, err) {
+    this.serviceLocator.httpService.get(_self.api.preload, function (res) {
       console.log("base list preload",_self.api.preload)
-
-      if (err) {
-        _self.form.message = err.message;
-        _self.form.error = true;     // ← THIS makes it red
-        return;
-      }
       if (res.success) {
         _self.form.preload = res.result;
       } else {
@@ -123,47 +117,30 @@ export class BaseCtl implements OnInit {
    * Searhs records 
    */
     search() {
-      console.log("search start")
-      var _self = this;
+    console.log("search start")
+    var _self = this;
+    console.log("Search Form", _self.form.searchParams);
+    this.serviceLocator.httpService.post(_self.api.search + "/" + _self.form.pageNo, _self.form.searchParams, function (res) {
 
-      this.serviceLocator.httpService.post(
-      _self.api.search + "/" + _self.form.pageNo,
-      _self.form.searchParams,
 
-      function (res, err) {
-
-      // 🔴 ERROR case (DB down / 503 / etc)
-      if (err) {
-        _self.form.message = err.message;
-        _self.form.error = true;     // ← THIS makes it red
-        return;
-      }
-
-      // ✅ SUCCESS case
       if (res.success) {
-
         _self.form.list = res.result.data;
         _self.nextList = res.result.nextList;
 
+        
         if (_self.form.list.length == 0) {
-          _self.form.message = "No record found";
+          
+          _self.form.message = "No record found"; 
           _self.form.error = true;
-        } else {
-          _self.form.message = "";
-          _self.form.error = false;
         }
-
+        console.log("List Size", _self.form.list.length);
       } else {
-        // business validation error from backend
+        _self.form.error = false;
         _self.form.message = res.result.message;
-        _self.form.error = true;   // also red
       }
-
-        console.log('FORM', _self.form);
-      }
-    );
+      console.log('FORM', _self.form);
+    });
   }
-
 
   searchOperation(operation: String) {
     console.log("previous/next search start")
@@ -200,16 +177,8 @@ export class BaseCtl implements OnInit {
 
     var _self = this;
     console.log('Inside display method');
-    this.serviceLocator.httpService.get(_self.api.get + "/" + _self.form.data.id, function (res, err) {
+    this.serviceLocator.httpService.get(_self.api.get + "/" + _self.form.data.id, function (res) {
      _self.form.data.id=0;
-
-       // 🔴 ERROR case (DB down / 503 / etc)
-      if (err) {
-        _self.form.message = err.message;
-        _self.form.error = true;     // ← THIS makes it red
-        return;
-      }
-
        if (res.success) {
          _self.populateForm(_self.form.data, res.result.data);
        }
@@ -218,7 +187,6 @@ export class BaseCtl implements OnInit {
         _self.form.message = res.result.message;
       }
       console.log('FORM', _self.form);
-     
     });
   }
 
@@ -240,46 +208,57 @@ export class BaseCtl implements OnInit {
 
 
   submit() {
-    var _self = this;
+  var _self = this;
 
-    console.log(this.form + "submit running start");
-    console.log("form data going to be submit" + this.form.data);
-    //  console.log("form data going to be submit" + this.studentId);
-    this.serviceLocator.httpService.post(this.api.save, this.form.data, function (res, err) {
+  console.log("submit running start");
+  console.log("form data going to be submit", this.form.data);
+
+  this.serviceLocator.httpService.post(
+    this.api.save,
+    this.form.data,
+    function (res) {
+
+      // 🔹 Reset messages
       _self.form.message = '';
-       _self.form.inputerror = {};
+      _self.form.inputerror = {};
+      _self.form.error = false;   // ✅ VERY IMPORTANT
 
-       console.log('dataa ===== > ', res.result.data);
-
-       if (err) {
-        _self.form.message = err.message;
-        _self.form.error = true;     // ← THIS makes it red
-        return;
-      }
+      console.log('response ===== > ', res);
 
       if (res.success) {
-        _self.form.message = "Data is saved";
-        
+
+        // ✅ SUCCESS = GREEN MESSAGE
+        _self.form.error = false;
+
+        // ✅ UPDATE vs SAVE message
         if (_self.form.data.id && _self.form.data.id > 0) {
-          _self.form.data.id = res.result.data;
+          _self.form.message = "Data updated successfully";
         } else {
-          _self.form.data.id = 0;
+          _self.form.message = "Data saved successfully";
         }
 
-        console.log(_self.form.data.id);
-        //  console.log("--------------------.");
-        //return _self.form.data.id ;
+        // ✅ Update id from backend response (if sent)
+        if (res.result && res.result.data) {
+          _self.form.data.id = res.result.data;
+        }
+
       } else {
+
+        // ❌ ERROR = RED MESSAGE
         _self.form.error = true;
-        if (res.result.inputerror) {
+
+        if (res.result && res.result.inputerror) {
           _self.form.inputerror = res.result.inputerror;
         }
+
         _self.form.message = res.result.message;
       }
-     // _self.form.data.id = res.result.data.id;
-      console.log('FORM', _self.form);
-    });
-  }
+
+      console.log('FINAL FORM STATE', _self.form);
+    }
+  );
+}
+
 
   delete(id, callback?) {
     var _self = this;
@@ -300,15 +279,10 @@ export class BaseCtl implements OnInit {
 
     deleteMany(id, callback?) {
     var _self = this;
-    this.serviceLocator.httpService.post(_self.api.deleteMany + "/" + id, this.form.searchParams, function (res, err) {
+    this.serviceLocator.httpService.post(_self.api.deleteMany + "/" + id, this.form.searchParams, function (res) {
       if (res.success) {
         _self.form.message = "Data is deleted";
         
-        if (err) {
-        _self.form.message = err.message;
-        _self.form.error = true;     // ← THIS makes it red
-        return;
-      }
         
 
         if (callback) {
