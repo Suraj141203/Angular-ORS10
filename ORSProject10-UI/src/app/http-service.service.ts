@@ -102,7 +102,7 @@ export class HttpServiceService {
     (error) => {
       console.log('ORS Error--', error);
 
-      let msg = 'Database service is currently unavailable. Please try again later';
+      let msg = 'Database ABC service is currently unavailable. Please try again later';
 
       if (error && error.error && error.error.result && error.error.result.message) {
         msg = error.error.result.message;
